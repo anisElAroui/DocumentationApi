@@ -1,0 +1,7 @@
+parameters:
+    js_config:
+        expansion: list
+        supported_submit_methods: [get, post, put, delete]
+        sorter: null
+        highlight_size_threshold: null
+        boolean_values: [1, 0]

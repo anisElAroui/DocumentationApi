@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>3PM Api Docs</title>
+    {% block stylesheets %}
+        <link href="{{ asset('plugins/swagger/css/typography.css') }}" type="text/css" rel="stylesheet" media="screen"/>
+        <link href="{{ asset('plugins/swagger/css/reset.css') }}" type="text/css" rel="stylesheet" media="screen"/>
+        <link href="{{ asset('plugins/swagger/css/screen.css') }}" type="text/css" rel="stylesheet" media="screen"/>
+        <link href='https://fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet' type='text/css'/>
+    {% endblock %}
+</head>
+<body class="swagger-section">
+<div id='header'>
+    <div class="swagger-ui-wrap">
+        <a id="logo" href="http://swagger.wordnik.com">swagger</a>
+        {% block al_swagger_ui_auth_form %}
+        {% endblock %}
+    </div>
+</div>
+{% block al_swagger_ui_content %}
+    <div id="message-bar" class="swagger-ui-wrap">&nbsp;</div>
+    <div id="swagger-ui-container" class="swagger-ui-wrap"></div>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('plugins/swagger/lib/shred.bundle.js') }}"></script>
+    <script src="{{ asset('plugins/swagger/lib/object-assign-pollyfill.js') }}"></script>
+    <script src="{{ asset('plugins/swagger/lib/jquery-1.8.0.min.js') }}"></script>
+    <script src="{{ asset('plugins/swagger/lib/jquery.slideto.min.js') }}"></script>
+    <script src="{{ asset('plugins/swagger/lib/jquery.wiggle.min.js') }}"></script>
+    <script src="{{ asset('plugins/swagger/lib/jquery.ba-bbq.min.js') }}"></script>
+    <script src="{{ asset('plugins/swagger/lib/handlebars-4.0.5.js') }}"></script>
+    <script src="{{ asset('plugins/swagger/lib/lodash.min.js') }}"></script>
+    <script src="{{ asset('plugins/swagger/lib/backbone-min.js') }}"></script>
+    <script src="{{ asset('plugins/swagger/js/swagger-ui.js') }}"></script>
+    <script src="{{ asset('plugins/swagger/lib/highlight.9.1.0.pack.js') }}"></script>
+    <script src="{{ asset('plugins/swagger/lib/highlight.9.1.0.pack_extended.js') }}"></script>
+    <script src="{{ asset('plugins/swagger/lib/jsoneditor.min.js') }}"></script>
+    <script src="{{ asset('plugins/swagger/lib/marked.js') }}"></script>
+    <script src="{{ asset('plugins/swagger/lib/swagger-oauth.js') }}"></script>
+    <script type="text/javascript">
+        $(function () {
+            window.swaggerUi = new SwaggerUi({
+                {#url: {{ path('api_docs_resources')|json_encode|raw }},#}
+                url: "{{ url('api_docs_resources') }}",
+                dom_id: "swagger-ui-container",
+                validatorUrl: undefined,
+                supportedSubmitMethods: {{ js_config.supported_submit_methods|json_encode|raw }},
+                onComplete: function(swaggerApi, swaggerUi){
+                    if(typeof initOAuth === "function") {
+                        initOAuth({
+                            clientId: "your-client-id",
+                            clientSecret: "your-client-secret-if-required",
+                            realm: "your-realms",
+                            appName: "your-app-name",
+                            scopeSeparator: " ",
+                            additionalQueryStringParams: {}
+                        });
+                    }
+
+                    if(window.SwaggerTranslator) {
+                        window.SwaggerTranslator.translate();
+                    }
+                },
+                onFailure: function(data) {
+                    log("Unable to Load SwaggerUI");
+                },
+                docExpansion: {{ js_config.expansion|json_encode|raw }},
+                jsonEditor: false,
+                defaultModelRendering: 'schema',
+                showRequestHeaders: false,
+                showOperationIds: false,
+                cors: false,
+                sorter: {{ js_config.sorter|json_encode|raw }},
+                booleanValues: {{ js_config.boolean_values|json_encode|raw }},
+                highlightSizeThreshold: {{ js_config.highlight_size_threshold|json_encode|raw }}
+            });
+
+            window.swaggerUi.load();
+
+            function log() {
+                if ('console' in window) {
+                    console.log.apply(console, arguments);
+                }
+            }
+        });
+    </script>
+{% endblock %}
+</body>
+</html>

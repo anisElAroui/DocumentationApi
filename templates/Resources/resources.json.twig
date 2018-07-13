@@ -1,0 +1,801 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "3PM"
+    },
+    "host": "{{ app.request.host }}",
+    "basePath": ":8000/{% if app.environment == "dev" %}index.php/{% endif %}api/v1",
+    "tags": [
+        "User",
+        "Project",
+        "Sales_Presales",
+        "Project_Management",
+        "Project_Financial",
+        "Global_Status",
+        "Project_Health_Status",
+        "Financial_Health_Status",
+        "Content",
+        "Settings"
+    ],
+    "schemes": [
+        "{{ app.request.scheme }}"
+    ],
+    "paths": {
+        "/user/login": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Authentication",
+                "description": "",
+                "operationId": "authentication",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "udid",
+                        "description": "DeviceId",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "header",
+                        "name": "email",
+                        "description": "email Address",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "header",
+                        "name": "password",
+                        "description": "Password",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success Response",
+                        "schema": {
+                            "$ref": "#/definitions/Authentication"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Parameter",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidParameter"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/refreshToken": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Refresh authentication token",
+                "description": "",
+                "operationId": "RefreshToken",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "refresh_token",
+                        "description": "Refresh Token: geted on last login",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success Response",
+                        "schema": {
+                            "$ref": "#/definitions/Authentication"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Parameter",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidParameter"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/resetPasswordRequest": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Reset password request",
+                "description": "",
+                "operationId": "ResetPassword",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "email",
+                        "description": "email Address",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success Response",
+                        "schema": {
+                            "$ref": "#/definitions/Success"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Parameter",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidParameter"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/resetPasswordValidate": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Validate Reset password request",
+                "description": "",
+                "operationId": "ValidateResetPassword",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "email",
+                        "description": "Email",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "header",
+                        "name": "code",
+                        "description": "Code",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success Response",
+                        "schema": {
+                            "$ref": "#/definitions/ValidateResetPasswordRequest"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Parameter",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidParameter"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/resetPassword": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Reset password",
+                "description": "",
+                "operationId": "ResetPassword",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "reset_password_token",
+                        "description": "Reset Password token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "header",
+                        "name": "password[first]",
+                        "description": "Password",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "header",
+                        "name": "password[second]",
+                        "description": "Password Repeated",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success Response",
+                        "schema": {
+                            "$ref": "#/definitions/Success"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Parameter",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidParameter"
+                        }
+                    }
+                }
+            }
+        },
+        "/user": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get User informations",
+                "description": "",
+                "operationId": "GetUser",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "token",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success Response",
+                        "schema": {
+                            "$ref": "#/definitions/getUser"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Parameter",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidParameter"
+                        }
+                    }
+                }
+            }
+        },
+        "/projects": {
+            "get": {
+                "tags": [
+                    "Project"
+                ],
+                "summary": "All projects list",
+                "description": "",
+                "operationId": "ProjectsList",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "token",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "header",
+                        "name": "page",
+                        "description": "The page number",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "header",
+                        "name": "limit",
+                        "description": "Max result bu page",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success Response",
+                        "schema": {
+                            "$ref": "#/definitions/Checks"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Parameter",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidParameter"
+                        }
+                    }
+                }
+            }
+        },
+        "/project/add": {
+            "post": {
+                "tags": [
+                    "Project"
+                ],
+                "summary": "Create project",
+                "description": "",
+                "operationId": "CreateProject",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "token",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success Response",
+                        "schema": {
+                            "$ref": "#/definitions/Success"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Parameter",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidParameter"
+                        }
+                    }
+                }
+            }
+        },
+        "/content": {
+            "get": {
+                "tags": [
+                    "Content"
+                ],
+                "summary": "Content of static page",
+                "description": "",
+                "operationId": "Content",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "token",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "header",
+                        "name": "code",
+                        "description": "code de contenue(cgu, faq, tuto)",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success Response",
+                        "schema": {
+                            "$ref": "#/definitions/Content"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Parameter",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidParameter"
+                        }
+                    }
+                }
+            }
+        },
+        "/settings": {
+            "get": {
+                "tags": [
+                    "Settings"
+                ],
+                "summary": "App Settings",
+                "description": "",
+                "operationId": "Settings",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "token",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success Response",
+                        "schema": {
+                            "$ref": "#/definitions/Settings"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Parameter",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidParameter"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "InvalidParameter": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "default": "2"
+                },
+                "result": {
+                    "type": "",
+                    "default": "null"
+                },
+                "message": {
+                    "type": "string",
+                    "default": "Invalid parameter : params list"
+                }
+            }
+        },
+        "Registration": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "default": "0"
+                },
+                "message": {
+                    "type": "string",
+                    "default": "success"
+                },
+                "result": {
+                    "type": "object",
+                    "default": {
+                        "user": {
+                            "email": "john.doe@gmail.com",
+                            "subscription_step": 1
+                        }
+                    }
+                }
+            }
+        },
+        "ValidateCGU": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "default": "0"
+                },
+                "message": {
+                    "type": "string",
+                    "default": "success"
+                },
+                "result": {
+                    "type": "object",
+                    "default": {
+                        "user": {
+                            "cgu_validated": true,
+                            "subscription_step": 2
+                        }
+                    }
+                }
+            }
+        },
+        "ValidateRegistration": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "default": "0"
+                },
+                "message": {
+                    "type": "string",
+                    "default": "success"
+                },
+                "result": {
+                    "type": "object",
+                    "default": {
+                        "user": {
+                            "cgu_validated": true,
+                            "subscription_step": 3
+                        }
+                    }
+                }
+            }
+        },
+        "Authentication": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "default": "0"
+                },
+                "message": {
+                    "type": "string",
+                    "default": "success"
+                },
+                "result": {
+                    "type": "object",
+                    "default": {
+                        "token": "eyJhbGciOiJSUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiXSwidXNlcm5hbWUiOiJ1c2VyMyIsImlhdCI6MTUyNjM5NDA0NiwiZXhwIjoxNTI2Mzk0OTQ2fQ.C4BkspbmT021h8IG57mXea3ImEFuXovLCP0Ofv7sEChu-M6ev6e2OZiSVObbgdSMWO6AgZ8vaDTDtDQn2SiQC8DABCk0T63q5fEukK6257wXEremyNUKsv54RLYKeIR9l-wRx4zQFNjPc4e_VYiawnjLrb_SI8tzEceWT6UXvdsV9Tt1JlNScmWzgyBbb32MeCVpmIOvCqcxmBcS634VvPFRhN_HAeNa2aOMAADo7tFZZ6JPN0rCDaFgkG-uWcf6cVr0907nMK_Cq-Ru-HcVQ6GFQJWgCca5idOwBXz_rdbKz3gpTzAfn9DFJZPRA8T7Qmvl6Lby86Do2kF8PS9kAJ_OTLWWNbHmTDxnuonjB_2gf6JzwiAaP-1aV-KvWcFRad6-GwW5bNthcxHIAS6IotI360hB1yUwakhnAieuggOwblwdD0h-NwzJSEobRVoAE0TojJUvjvKB2gKT1Whm4qWhz0Z1mkmn9DO24qqQTuAFgkMlk4JwxlLbQSgmlBCTsp544DInoahMxqGsbk_NGTtjs3j8t5ysVxjVFOYnXl77LO0OKXYHUwalS02QVpSDpLYIm1fNEJzGuF6_HLlmZcgqi7rBLR6mfo6O0Y0TFx8NohwSKXLL3ZA173CVFXTl2cmFKgXLuID8q1Ef4ctLcEhf4lY8_Fv9L9fl-33yoiM",
+                        "refresh_token": "a17e044e55afe40fb4a4267a638837621795a3240690fa9bba47843ef9e4ac54950d73e4bb33ee1309c089592168c6d8af7930c0cb01577f51672774b5060ce9"
+                    }
+                }
+            }
+        },
+        "RegenerateCode": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "default": "0"
+                },
+                "message": {
+                    "type": "string",
+                    "default": "success"
+                },
+                "result": {
+                    "type": "object",
+                    "default": []
+                }
+            }
+        },
+        "ValidateResetPasswordRequest": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "default": "0"
+                },
+                "message": {
+                    "type": "string",
+                    "default": "success"
+                },
+                "result": {
+                    "type": "object",
+                    "default": {
+                        "reset_password_token": "6qhcipW2uhTIxPRMRIsWzt7UZhPr13v8"
+                    }
+                }
+
+            }
+        },
+        "RefreshToken": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "default": "0"
+                },
+                "result": {
+                    "type": "object",
+                    "default": {
+                        "token": "5YTyn8ooky6_ksu0lWNd7_I_oQ9P5357TiyeDeZ4c79vLy2orM"
+
+                    }
+                },
+                "message": {
+                    "type": "string",
+                    "default": "null"
+                }
+            }
+        },
+        "getUser": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "default": "0"
+                },
+                "message": {
+                    "type": "string",
+                    "default": "null"
+                },
+                "result": {
+                    "type": "object",
+                    "default": {
+                        "user": {
+                            "id": "3a1d4ade-5789-11e8-98cb-ecf4bb7836bc",
+                            "first_name": "User 3",
+                            "last_name": "User 3",
+                            "email": "user3@smartpos.com",
+                            "subscription_step": 3,
+                            "social_reason": "Exemple2",
+                            "iban": "FR45936565576704366",
+                            "mobile": "",
+                            "siret": "54205118000062",
+                            "fnci_control": false,
+                            "amount_from": ""
+                        }
+                    }
+                }
+            }
+        },
+        "Content": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "default": "0"
+                },
+                "message": {
+                    "type": "string",
+                    "default": "null"
+                },
+                "result": {
+                    "type": "object",
+                    "default": {
+                        "content": {
+                            "title": "FAQ",
+                            "code": "faq",
+                            "content": "Exmeple de page FAQ"
+                        }
+                    }
+                }
+            }
+        },
+        "Checks": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "default": "0"
+                },
+                "message": {
+                    "type": "string",
+                    "default": "success"
+                },
+                "result": {
+                    "type": "object",
+                    "default":  {
+                        "check": [
+                            {
+                                "cin": "",
+                                "iban": "",
+                                "created_at": "2018-05-14T17:12:35+02:00",
+                                "id": "3b531d41-5789-11e8-98cb-ecf4bb7836bc",
+                                "num": 20,
+                                "remittance": {
+                                    "id": "4d34afef-5789-11e8-98cb-ecf4bb7836bc"
+                                },
+                                "amount": 900
+                            },
+                            {
+                                "cin": "",
+                                "iban": "",
+                                "created_at": "2018-05-14T17:12:35+02:00",
+                                "id": "3b535b49-5789-11e8-98cb-ecf4bb7836bc",
+                                "num": 21,
+                                "remittance": {
+                                    "id": "4d34afef-5789-11e8-98cb-ecf4bb7836bc"
+                                },
+                                "amount": 900
+                            },
+                            {
+                                "cin": "",
+                                "iban": "",
+                                "created_at": "2018-05-14T17:12:35+02:00",
+                                "id": "3b539771-5789-11e8-98cb-ecf4bb7836bc",
+                                "num": 22,
+                                "remittance": {
+                                    "id": "4d34afef-5789-11e8-98cb-ecf4bb7836bc"
+                                },
+                                "amount": 900
+                            }
+                        ],
+                        "page": 1,
+                        "limit": 3,
+                        "count": 10
+                    }
+                }
+            }
+        },
+        "CheckDetail": {
+            "type": "object",
+            "properties": {}
+        },
+        "Settings": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "default": "0"
+                },
+                "message": {
+                    "type": "string",
+                    "default": "null"
+                },
+                "result": {
+                    "type": "object",
+                    "default": {
+                        "user": {
+                            "subscription_step": 3,
+                            "cgu_validated": true,
+                            "first_name": "User 3",
+                            "last_name": "User 3"
+                        },
+                        "settings": {
+                            "a2ia_licence": "LICENCEGENERATED",
+                            "a2ia_expired_at": "12/08/2018",
+                            "a2ia_threshold_cmc7": "2",
+                            "a2ia_threshold_amount": "80",
+                            "a2ia_threshold_character": "90",
+                            "session_token_ttl": "900",
+                            "refresh_token_ttl": "3600",
+                            "fnci_checking": "1",
+                            "fnci_threshold": "20"
+                        }
+
+                    }
+                }
+            }
+        },
+        "Success": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "default": "0"
+                },
+                "message": {
+                    "type": "string",
+                    "default": "success"
+                },
+                "result": {
+                    "type": "object",
+                    "default": "null"
+                }
+            }
+        }
+    }
+}
